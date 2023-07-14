@@ -25,7 +25,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: {'/signUp': (context) => const SignUpScreen()},
+      routes: {
+        '/signUp': (context) => const SignUpScreen(),
+        '/welcome': (context) => const WelcomeScreen()
+      },
     );
   }
 }
@@ -192,10 +195,28 @@ class _SignUpFormState extends State<SignUpForm> {
                     : Colors.blue;
               }),
             ),
-            onPressed: null,
+            onPressed: _showWelcomeScreen,
             child: const Text('Sign up'),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showWelcomeScreen() {
+    Navigator.of(context).pushNamed('/welcome');
+  }
+}
+
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child:
+            Text('Welcome!', style: Theme.of(context).textTheme.displayMedium),
       ),
     );
   }
