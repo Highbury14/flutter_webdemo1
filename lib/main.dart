@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'models/favorites.dart';
+import 'screens/home.dart';
+import 'screens/favorites.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +32,8 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
         '/signUp': (context) => const SignUpScreen(),
-        '/welcome': (context) => const WelcomeScreen()
+        '/welcome': (context) => const WelcomeScreen(),
+        '/lists_page': (context) => const TestingApp()
       },
     );
   }
@@ -301,6 +307,44 @@ class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator>
         value: _curveAnimation.value,
         valueColor: _colorAnimation,
         backgroundColor: _colorAnimation.value?.withOpacity(0.4),
+      ),
+    );
+  }
+}
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: HomePage.routeName,
+      builder: (context, state) {
+        return const HomePage();
+      },
+      routes: [
+        GoRoute(
+          path: FavoritesPage.routeName,
+          builder: (context, state) {
+            return const FavoritesPage();
+          },
+        ),
+      ],
+    ),
+  ],
+);
+
+class TestingApp extends StatelessWidget {
+  const TestingApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<Favorites>(
+      create: (context) => Favorites(),
+      child: MaterialApp.router(
+        title: 'Testing Sample',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+        ),
+        routerConfig: _router,
       ),
     );
   }
